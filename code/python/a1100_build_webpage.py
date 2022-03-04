@@ -54,7 +54,7 @@ def copy_media():
             src = os.path.join(retrieve_path(plot_count_annual), term +  '_percent' + '_02' + '.png')
             dst_name = str(src)
             dst_name = dst_name.replace('/','_')
-            dst = os.path.join(retrieve_path('web_media'), dst_name + '.png')
+            dst = os.path.join(retrieve_path('web_media'), dst_name)
 
             shutil.copy(src,dst)
 
@@ -195,31 +195,31 @@ def introduction_html():
                 src = os.path.join(retrieve_path(plot_count_annual), term +  '_percent' + '_02' + '.png')
                 dst_name = str(src)
                 dst_name = dst_name.replace('/','_')
-                dst = os.path.join(retrieve_path('web_media'), dst_name + '.png')
+                dst = os.path.join(retrieve_path('web_media_for_index'), dst_name)
                 f.write(dst)
                 f.write('" />')
 
+                f.write('</div>')
+                f.write('</center>' + '\n')
+                f.write('</body>' + '\n')
+
+                # map of patents
+                f.write('<body>' + '\n')
+                f.write('<center>' + '\n')
+                f.write('<div class="container">')
+                f.write('<h2>' + str('Map of Heavy Metal NSF Awards') + '</h2>' + '\n')
+
+                # Insert map gif
+                f.write('<img alt="My Image" src="' + '')
+                #f.write(str(retrieve_path('map_gif')))
+                f.write('" />')
+                # Insert static image of the current map
+            f.write('<img alt="My Image" src="' + '')
+            #f.write(str(retrieve_path('map_patent')))
+            f.write('" />')
             f.write('</div>')
             f.write('</center>' + '\n')
             f.write('</body>' + '\n')
-
-            # map of patents
-            f.write('<body>' + '\n')
-            f.write('<center>' + '\n')
-            f.write('<div class="container">')
-            f.write('<h2>' + str('Map of Heavy Metal NSF Awards') + '</h2>' + '\n')
-
-            # Insert map gif
-            f.write('<img alt="My Image" src="' + '')
-            #f.write(str(retrieve_path('map_gif')))
-            f.write('" />')
-            # Insert static image of the current map
-        f.write('<img alt="My Image" src="' + '')
-        #f.write(str(retrieve_path('map_patent')))
-        f.write('" />')
-        f.write('</div>')
-        f.write('</center>' + '\n')
-        f.write('</body>' + '\n')
 
         f.close()
 

@@ -55,8 +55,35 @@ def copy_media():
             dst_name = str(src)
             dst_name = dst_name.replace('/','_')
             dst = os.path.join(retrieve_path('web_media'), dst_name)
-
             shutil.copy(src,dst)
+
+            gif_dst = str(name_article + '_map_gif')
+            for file in os.path.join(retrieve_path(gif_dst)):
+
+                src = os.path.join(os.path.join(retrieve_path(gif_dst)), file)
+                dst_name = str(src)
+                dst_name = dst_name.replace('/','_')
+                dst = os.path.join(retrieve_path('web_media'), dst_name)
+                try:
+                    shutil.copy(src,dst)
+                except:
+                    print(dst + ' not found')
+
+            file_dst_name = str(name_article + '_map_png')
+            try:
+                df_file = os.path.join(retrieve_path(file_dst_name), term + '_' + str('2022') + '.png')
+            except:
+                df_file = os.path.join(retrieve_path(file_dst_name), term + '_' + str('2021') + '.png')
+
+            src = df_file
+            dst_name = str(src)
+            dst_name = dst_name.replace('/','_')
+            dst = os.path.join(retrieve_path('web_media'), dst_name)
+            try:
+                shutil.copy(src,dst)
+            except:
+                print(dst + ' not found')
+
 
     # copy map image
 
@@ -199,6 +226,7 @@ def introduction_html():
                 f.write(dst)
                 f.write('" />')
 
+
                 f.write('</div>')
                 f.write('</center>' + '\n')
                 f.write('</body>' + '\n')
@@ -211,15 +239,33 @@ def introduction_html():
 
                 # Insert map gif
                 f.write('<img alt="My Image" src="' + '')
-                #f.write(str(retrieve_path('map_gif')))
+                gif_dst = str(name_article + '_map_gif')
+                for file in os.path.join(retrieve_path(gif_dst)):
+
+                    src = os.path.join(os.path.join(retrieve_path(gif_dst)), file)
+                    dst_name = str(src)
+                    dst_name = dst_name.replace('/','_')
+                    dst = os.path.join(retrieve_path('web_media'), dst_name)
+                f.write(dst)
                 f.write('" />')
                 # Insert static image of the current map
-            f.write('<img alt="My Image" src="' + '')
-            #f.write(str(retrieve_path('map_patent')))
-            f.write('" />')
-            f.write('</div>')
-            f.write('</center>' + '\n')
-            f.write('</body>' + '\n')
+
+                f.write('<img alt="My Image" src="' + '')
+                file_dst_name = str(name_article + '_map_png')
+                try:
+                    df_file = os.path.join(retrieve_path(file_dst_name), term + '_' + str('2022') + '.png')
+                except:
+                    df_file = os.path.join(retrieve_path(file_dst_name), term + '_' + str('2021') + '.png')
+                src = df_file
+                dst_name = str(src)
+                dst_name = dst_name.replace('/','_')
+                dst = os.path.join(retrieve_path('web_media'), dst_name)
+                f.write(dst)
+                f.write('" />')
+                
+                f.write('</div>')
+                f.write('</center>' + '\n')
+                f.write('</body>' + '\n')
 
         f.close()
 

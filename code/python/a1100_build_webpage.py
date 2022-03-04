@@ -7,7 +7,7 @@ import shutil
 
 from a0001_admin import clean_dataframe
 from a0001_admin import name_paths
-from a0001_admin import retrieve_compare_term_file_names
+from a0001_admin import retrieve_categories
 from a0001_admin import retrieve_format
 from a0001_admin import retrieve_list
 from a0001_admin import retrieve_path
@@ -48,7 +48,7 @@ def copy_media():
     # copy comparison chart
     for name_article in retrieve_list('type_article'):
 
-        for term in retrieve_compare_term_file_names():
+        for term in retrieve_categories():
 
             plot_count_annual = str(name_article + '_compare_terms_plot')
             src = os.path.join(retrieve_path(plot_count_annual), term +  '_percent' + '_02' + '.png')
@@ -200,72 +200,76 @@ def introduction_html():
             print('f = ' + str(ff))
             df = clean_dataframe(pd.read_csv(ff))
 
-            print('df.columns = ')
-            print(df.columns)
+        print('df.columns = ')
+        print(df.columns)
 
+        year_min = min(list(df['ref_year']))
+        year_max = max(list(df['ref_year']))
+        year_span = year_max - year_min
+        total_filed = len(list(df['ref_year']))
 
-            year_min = min(list(df['ref_year']))
-            year_max = max(list(df['ref_year']))
-            year_span = year_max - year_min
-            total_filed = len(list(df['ref_year']))
+        f.write('<p>' + str('The plot represents ' + str(total_filed)))
+        f.write(str(' NSF awards issued over a '))
+        f.write(str(year_span) + ' year span, from ')
+        f.write(str(str(year_min) + '-' + str(year_max) + '. Only a fraction of these awards mention a specific metal of interest to this inquiry. Mention of specific metals in the awards are compared each year.') + '</p>' + '\n')
 
-            f.write('<p>' + str('The plot represents ' + str(total_filed)))
-            f.write(str(' NSF awards issued over a '))
-            f.write(str(year_span) + ' year span, from ')
-            f.write(str(str(year_min) + '-' + str(year_max) + '. Only a fraction of these awards mention a specific metal of interest to this inquiry. Mention of specific metals in the awards are compared each year.') + '</p>' + '\n')
+        print('retrieve_categories() = ')
+        print(retrieve_categories())
+        for term in retrieve_categories():
 
-            for term in retrieve_compare_term_file_names():
+            f.write('<img alt="My Image" src="' + '')
 
-                f.write('<img alt="My Image" src="' + '')
+            plot_count_annual = str(name_article + '_compare_terms_plot')
+            src = os.path.join(retrieve_path(plot_count_annual), term +  '_percent' + '_02' + '.png')
+            dst_name = str(src)
+            dst_name = dst_name.replace('/','_')
+            dst = os.path.join(retrieve_path('web_media_for_index'), dst_name)
+            f.write(dst)
+            print(dst)
+            f.write('" />')
 
-                plot_count_annual = str(name_article + '_compare_terms_plot')
-                src = os.path.join(retrieve_path(plot_count_annual), term +  '_percent' + '_02' + '.png')
-                dst_name = str(src)
-                dst_name = dst_name.replace('/','_')
-                dst = os.path.join(retrieve_path('web_media_for_index'), dst_name)
-                f.write(dst)
-                f.write('" />')
+            f.write('</div>')
+            f.write('</center>' + '\n')
+            f.write('</body>' + '\n')
 
+            # map of patents
+            f.write('<body>' + '\n')
+            f.write('<center>' + '\n')
+            f.write('<div class="container">')
+            f.write('<h2>' + str('Map of Heavy Metal NSF Awards') + '</h2>' + '\n')
 
-                f.write('</div>')
-                f.write('</center>' + '\n')
-                f.write('</body>' + '\n')
+            # Insert map gif
+            f.write('<img alt="My Image" src="' + '')
+            gif_dst = str(name_article + '_map_gif')
+            for file in os.path.join(retrieve_path(gif_dst)):
 
-                # map of patents
-                f.write('<body>' + '\n')
-                f.write('<center>' + '\n')
-                f.write('<div class="container">')
-                f.write('<h2>' + str('Map of Heavy Metal NSF Awards') + '</h2>' + '\n')
-
-                # Insert map gif
-                f.write('<img alt="My Image" src="' + '')
-                gif_dst = str(name_article + '_map_gif')
-                for file in os.path.join(retrieve_path(gif_dst)):
-
-                    src = os.path.join(os.path.join(retrieve_path(gif_dst)), file)
-                    dst_name = str(src)
-                    dst_name = dst_name.replace('/','_')
-                    dst = os.path.join(retrieve_path('web_media'), dst_name)
-                f.write(dst)
-                f.write('" />')
-                # Insert static image of the current map
-
-                f.write('<img alt="My Image" src="' + '')
-                file_dst_name = str(name_article + '_map_png')
-                try:
-                    df_file = os.path.join(retrieve_path(file_dst_name), term + '_' + str('2022') + '.png')
-                except:
-                    df_file = os.path.join(retrieve_path(file_dst_name), term + '_' + str('2021') + '.png')
-                src = df_file
+                src = os.path.join(os.path.join(retrieve_path(gif_dst)), file)
                 dst_name = str(src)
                 dst_name = dst_name.replace('/','_')
                 dst = os.path.join(retrieve_path('web_media'), dst_name)
+
+                f.write('<img alt="My Image" src="' + '')
                 f.write(dst)
                 f.write('" />')
 
-                f.write('</div>')
-                f.write('</center>' + '\n')
-                f.write('</body>' + '\n')
+            f.write('<img alt="My Image" src="' + '')
+            file_dst_name = str(name_article + '_map_png')
+
+            try:
+                df_file = os.path.join(retrieve_path(file_dst_name), term + '_' + str('2021') + '.png')
+            except:
+                df_file = os.path.join(retrieve_path(file_dst_name), term + '_' + str('2020') + '.png')
+
+            src = df_file
+            dst_name = str(src)
+            dst_name = dst_name.replace('/','_')
+            dst = os.path.join(retrieve_path('web_media'), dst_name)
+            f.write(dst)
+            f.write('" />')
+
+            f.write('</div>')
+            f.write('</center>' + '\n')
+            f.write('</body>' + '\n')
 
         f.close()
 

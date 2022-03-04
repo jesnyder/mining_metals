@@ -226,14 +226,10 @@ def introduction_html():
 
         for col_name in df.columns:
 
-
             name_src, name_dst, name_summary, name_unique, plot_unique = name_paths(name_article)
-            f = os.path.join(retrieve_path(name_unique),  col_name + '.csv' )
+            file_path = os.path.join(retrieve_path(name_unique),  col_name + '.csv' )
+            write_table_count(file_path)
 
-            try:
-                write_table_count(file_path)
-            except:
-                print('table skipped')
 
 
     # Close the html file
@@ -257,16 +253,17 @@ def write_table_count(file_path):
 
     # retrieve trial counts
     df = pd.read_csv(file_path)
-    del df['Unnamed: 0']
+    df = clean_dataframe(df)
 
-    df['count'] = df['count'].astype(int)
+    df['counts'] = df['counts'].astype(int)
 
-    term = list(df[file_name])
-    count = list(df['count'])
+    term = list(df['value'])
+    count = list(df['counts'])
+    percent = list(df['percents'])
 
     chart_title = 'Trial counts for the metadata term:' + file_name
 
-    index_html = retrieve_path('index_html')
+    index_html = retrieve_path('html_index')
     f = open(index_html, "a")
     f.write('<body>' + '\n')
     f.write('<center>' + '\n')

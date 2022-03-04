@@ -52,7 +52,9 @@ def copy_media():
 
             plot_count_annual = str(name_article + '_compare_terms_plot')
             src = os.path.join(retrieve_path(plot_count_annual), term +  '_percent' + '_02' + '.png')
-            dst = os.path.join(retrieve_path('web_media'), plot_count_annual + ' ' + term +  '_02' + '.png')
+            dst_name = str(src)
+            dst_name = dst_name.replace('/','_')
+            dst = os.path.join(retrieve_path('web_media'), dst_name + '.png')
 
             shutil.copy(src,dst)
 
@@ -188,8 +190,12 @@ def introduction_html():
             for term in retrieve_compare_term_file_names():
 
                 f.write('<img alt="My Image" src="' + '')
+
                 plot_count_annual = str(name_article + '_compare_terms_plot')
-                dst = os.path.join(retrieve_path('web_media'), plot_count_annual + ' ' + term + '_02' + '.png')
+                src = os.path.join(retrieve_path(plot_count_annual), term +  '_percent' + '_02' + '.png')
+                dst_name = str(src)
+                dst_name = dst_name.replace('/','_')
+                dst = os.path.join(retrieve_path('web_media'), dst_name + '.png')
                 f.write(dst)
                 f.write('" />')
 

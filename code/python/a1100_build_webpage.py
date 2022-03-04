@@ -212,7 +212,7 @@ def introduction_html():
             f.write('<p>' + str('The plot represents ' + str(total_filed)))
             f.write(str(' NSF awards issued over a '))
             f.write(str(year_span) + ' year span, from ')
-            f.write(str(str(year_min) + '-' + str(year_max) + '.') + '</p>' + '\n')
+            f.write(str(str(year_min) + '-' + str(year_max) + '. Only a fraction of these awards mention a specific metal of interest to this inquiry. Mention of specific metals in the awards are compared each year.') + '</p>' + '\n')
 
             for term in retrieve_compare_term_file_names():
 
@@ -262,7 +262,7 @@ def introduction_html():
                 dst = os.path.join(retrieve_path('web_media'), dst_name)
                 f.write(dst)
                 f.write('" />')
-                
+
                 f.write('</div>')
                 f.write('</center>' + '\n')
                 f.write('</body>' + '\n')
